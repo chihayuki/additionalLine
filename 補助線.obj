@@ -1,0 +1,230 @@
+
+--track0:横,1,10,10,0.1
+
+--track1:縦,1,10,10,0.1
+
+--track2:垂線1,0,100 ,0,0.1
+
+--track3:垂線2,0,100 ,0,0.1
+
+--dialog:段数(1-),split=3;上範囲(0-100),up_range_area=90;下範囲(0-100),down_range_area=90;右範囲(0-100),right_range_area=90;左範囲(0-100),left_range_area=90;範囲色(0-255),back_color=50;範囲透明度(0-1),range_alpha=0.5;色/col,col=0x0000FF;
+--aaa dialog:段数(1-),split=3;範囲(0-100),back_range_area=90;範囲色(0-255),back_color=50;範囲透明度(0-1),range_alpha=0.5;色/col,col=0x0000FF;
+
+w = obj.screen_w
+h = obj.screen_h
+
+function line (x0,y0,x1,y1,color,deg)
+	obj.setoption("blend", 0,w,h)
+	obj.load("figure", "四角形", color, 1)
+	obj.drawpoly(x0,y0,0, x1,y0,0, x1,y1,0, x0,y1,0)
+	obj.draw()
+end
+
+function diagonal(w,h,raw_size,col)
+	--対角線
+	size = raw_size /2
+	--obj.setoption("drawtarget", "tempbuffer", w, h)
+	obj.setoption("blend", 0)
+	obj.load("figure","四角形",col,1)
+	obj.drawpoly(
+				  w/2 -size,-h/2 -size,0,
+				 -w/2 -size, h/2 -size,0,
+				 -w/2 +size, h/2 +size,0,
+				  w/2 +size,-h/2 +size,0)
+
+	obj.drawpoly(
+				 -w/2 +size, -h/2 -size,0,
+				 -w/2 -size, -h/2 +size,0,
+				  w/2 -size,  h/2 +size,0,
+				  w/2 +size,  h/2 -size,0)
+	obj.draw()
+	obj.copybuffer("tmp", "cache:crescent")
+	obj.copybuffer("obj","tmp")
+
+end
+
+function trapezoid(x1,y1,x2,y2,x3,y3,x4,y4,alpha)
+    obj.drawpoly(
+             x1,y1,0,
+             x2,y2,0,
+             x3,y3,0,
+             x4,y4,0,
+  			 0 ,0 ,x1,0 ,
+  			 x1,y1,0 ,y1,
+  			 alpha)
+			 obj.draw()
+ 
+end
+
+
+function alpha_screan(up_area,down_area,right_area,left_area)
+  --半透明の範囲 
+  --obj.setoption("drawtarget", "tempbuffer", w, h)
+  obj.setoption("blend", 0)
+  rect_color = RGB(back_color,back_color,back_color)
+  obj.load("figure","四角形",rect_color,1)
+  obj.setoption("blend", 0)
+  
+  up         = -h * up_area    / 100 / 2
+  down       =  h * down_area  / 100 / 2
+  up_right   = -w * right_area / 100 / 2
+  up_left    =  w * left_area  / 100 / 2
+  down_right = -w * right_area / 100 / 2
+  down_left  =  w * left_area  / 100 / 2
+
+  --上
+  trapezoid(-w      , -h,
+            up_right,  up,
+			up_left ,  up,
+			w       , -h,
+			range_alpha)
+  --下
+  trapezoid(w         , h,
+			down_left , down,
+            down_right, down,
+			-w        , h,
+			range_alpha)
+  --左
+  trapezoid(-w        , -h,
+  			up_right  ,  up,
+  			down_right,  down,
+			-w        ,  h,
+			range_alpha)
+  --右
+  trapezoid(w,-h,
+			up_left  , up,
+			down_left, down,
+			w        , h,
+			range_alpha)
+
+  obj.copybuffer("obj", "cache:crescent")
+  obj.draw()
+end
+
+function lattice(w,h,split,col)
+	--格子
+	--obj.setoption("drawtarget", "tempbuffer", w, h)
+	w_radius = w /split
+	h_radius = h /split
+	
+	for i = 0,split do
+		if i == 0 or i== split then
+			size = raw_size *2
+		else
+			size = raw_size
+		end
+	
+		line(-w /2 + w_radius* i + size,
+		      h /2,
+			 -w /2+ w_radius *i - size,
+			 -h /2,
+			 col,0)
+	
+		line( w /2,
+		     -h /2 +h_radius * i +size,
+			 -w /2,
+			 -h /2 + h_radius * i -size,
+			 col,0)
+		obj.copybuffer("tmp", "cache:crescent")
+		obj.draw()
+	end
+    obj.copybuffer("tmp", "cache:crescent")
+	obj.copybuffer("obj","tmp")
+
+end
+
+function rot(x,y,rag)
+	local xout = x * math.cos(rag) - y * math.sin(rag)
+	local yout = x * math.sin(rag) + y * math.cos(rag)
+	return xout,yout
+end
+
+
+w_ratio = 1 - (10-obj.track0)/10
+h_ratio = 1 + (obj.track1-10)/10
+w = w * w_ratio
+h = h * h_ratio
+raw_size = 2
+
+obj.setoption("drawtarget", "tempbuffer", w, h)
+
+--半透明
+alpha_screan(up_range_area,down_range_area,right_range_area,left_range_area)
+
+--格子
+lattice(w,h,split,col)
+
+
+----対角線
+diagonal(w,h,raw_size,col)
+
+
+
+perpendicular1 = obj.track2 /100
+perpendicular2 = obj.track3 /100
+
+--対角線の垂線 size = raw_size /2
+obj.setoption("blend", 0)
+obj.load("figure","四角形",col,1)
+
+w_perpendicular1 = w*perpendicular1 -w/2
+h_perpendicular1 = h*perpendicular1 -h/2
+
+x1,y1 = rot( w /2 ,-h /2  ,math.rad(90))
+x2,y2 = rot(-w /2 , h /2  ,math.rad(90))
+x3,y3 = rot(-w /2 , h /2  ,math.rad(90))
+x4,y4 = rot( w /2 ,-h /2  ,math.rad(90))
+
+x1= x1 + w_perpendicular1+size
+x2= x2 + w_perpendicular1+size
+x3= x3 + w_perpendicular1-size
+x4= x4 + w_perpendicular1-size
+
+y1 =y1 -h_perpendicular1-size
+y2 =y2 -h_perpendicular1-size
+y3 =y3 -h_perpendicular1+size
+y4 =y4 -h_perpendicular1+size
+
+obj.drawpoly(x1,y1,0,
+			 x2,y2,0,
+			 x3,y3,0,
+			 x4,y4,0)
+
+obj.copybuffer("obj", "cache:crescent")
+obj.draw()
+
+obj.setoption("blend", 0)
+obj.load("figure","四角形",col,1)
+w_perpendicular2 = w*perpendicular2 -w/2
+h_perpendicular2 = h*perpendicular2 -h/2
+
+x1,y1 = rot(-w /2 ,-h /2  ,math.rad(90))
+x2,y2 = rot(-w /2 ,-h /2  ,math.rad(90))
+x3,y3 = rot( w /2 , h /2  ,math.rad(90))
+x4,y4 = rot( w /2 , h /2  ,math.rad(90))
+
+x1= x1 -w_perpendicular2-size
+x2= x2 -w_perpendicular2+size
+x3= x3 -w_perpendicular2+size
+x4= x4 -w_perpendicular2-size
+
+y1 =y1 -h_perpendicular2-size
+y2 =y2 -h_perpendicular2+size
+y3 =y3 -h_perpendicular2+size
+y4 =y4 -h_perpendicular2-size
+
+obj.drawpoly(x1,y1,0,
+			 x2,y2,0,
+			 x3,y3,0,
+			 x4,y4,0)
+
+obj.copybuffer("tmp", "cache:crescent")
+obj.copybuffer("obj","tmp")
+obj.draw()
+
+
+obj.copybuffer("obj", "tmp")
+
+--#デフォルト設定地を変更　範囲90　透明度50
+--とりあえず　線のデフォルトを青に　各種デフォルト値の変更　端の範囲を別々に変えられる
+--端の範囲を左右上下で4で設定できるようにする:
