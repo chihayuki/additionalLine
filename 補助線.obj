@@ -1,29 +1,30 @@
---track0:æ¨ª,1,10,10,0.1
 
---track1:ç¸¦,1,10,10,0.1
+--track0:‰¡,1,10,10,0.1
 
---track2:å‚ç·š1,0,100 ,0,0.1
+--track1:c,1,10,10,0.1
 
---track3:å‚ç·š2,0,100 ,0,0.1
+--track2:‚ü1,0,100 ,0,0.1
 
---dialog:æ®µæ•°(1-),split=3;ä¸Šç¯„å›²(0-100),up_range_area=90;ä¸‹ç¯„å›²(0-100),down_range_area=90;å³ç¯„å›²(0-100),right_range_area=90;å·¦ç¯„å›²(0-100),left_range_area=90;ç¯„å›²è‰²(0-255),back_color=50;ç¯„å›²é€æ˜åº¦(0-1),range_alpha=0.5;è‰²/col,col=0x0000FF;
+--track3:‚ü2,0,100 ,0,0.1
+
+--dialog:’i”(1-),split=3;ã”ÍˆÍ(0-100),up_range_area=90;‰º”ÍˆÍ(0-100),down_range_area=90;‰E”ÍˆÍ(0-100),right_range_area=90;¶”ÍˆÍ(0-100),left_range_area=90;”ÍˆÍF(0-255),back_color=50;”ÍˆÍ“§–¾“x(0-1),range_alpha=0.5;F/col,col=0x0000FF;
 
 local w = obj.screen_w
 local h = obj.screen_h
 
 function line (x0,y0,x1,y1,color,deg)
 	obj.setoption("blend", 0,w,h)
-	obj.load("figure", "ÂlÂŠpÂŒ`", color, 1)
+	obj.load("figure", "lŠpŒ`", color, 1)
 	obj.drawpoly(x0,y0,0, x1,y0,0, x1,y1,0, x0,y1,0)
 	obj.draw()
 end
 
 function diagonal(w,h,raw_size,col)
-	--Â‘ÃÂŠpÂÃ¼
+	--‘ÎŠpü
 	local size = raw_size /2
 	--obj.setoption("drawtarget", "tempbuffer", w, h)
 	obj.setoption("blend", 0)
-	obj.load("figure","ÂlÂŠpÂŒ`",col,1)
+	obj.load("figure","lŠpŒ`",col,1)
 	obj.drawpoly(
 				  w/2 -size,-h/2 -size,0,
 				 -w/2 -size, h/2 -size,0,
@@ -56,12 +57,12 @@ end
 
 
 function alpha_screan(up_area,down_area,right_area,left_area)
-  --Â”Å’Â“Â§Â–Å¸Â‚ÃŒÂ”ÃÂˆÃ 
+  --”¼“§–¾‚Ì”ÍˆÍ 
   --obj.setoption("drawtarget", "tempbuffer", w, h)
   obj.setoption("blend", 0)
   
   local rect_color = RGB(back_color,back_color,back_color)
-  obj.load("figure","ÂlÂŠpÂŒ`",rect_color,1)
+  obj.load("figure","lŠpŒ`",rect_color,1)
   obj.setoption("blend", 0)
   
   local up         = -h * up_area    / 100 / 2
@@ -71,25 +72,25 @@ function alpha_screan(up_area,down_area,right_area,left_area)
   local down_right = -w * right_area / 100 / 2
   local down_left  =  w * left_area  / 100 / 2
 
-  --ÂÃ£
+  --ã
   trapezoid(-w      , -h,
             up_right,  up,
 			up_left ,  up,
 			w       , -h,
 			range_alpha)
-  --Â‰Âº
+  --‰º
   trapezoid(w         , h,
 			down_left , down,
             down_right, down,
 			-w        , h,
 			range_alpha)
-  --ÂÂ¶
+  --¶
   trapezoid(-w        , -h,
   			up_right  ,  up,
   			down_right,  down,
 			-w        ,  h,
 			range_alpha)
-  --Â‰E
+  --‰E
   trapezoid(w,-h,
 			up_left  , up,
 			down_left, down,
@@ -101,7 +102,7 @@ function alpha_screan(up_area,down_area,right_area,left_area)
 end
 
 function lattice(w,h,split,col,raw_size)
-	--ÂŠiÂq
+	--Šiq
 	--obj.setoption("drawtarget", "tempbuffer", w, h)
 	local w_radius = w /split
 	local h_radius = h /split
@@ -141,20 +142,20 @@ end
 
 local w_ratio = 1 - (10-obj.track0)/10
 local h_ratio = 1 + (obj.track1-10)/10
-local w = w * w_ratio
-local h = h * h_ratio
+w = w * w_ratio
+h = h * h_ratio
 local raw_size = 2
 
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
---Â”Å’Â“Â§Â–Å¸
+--”¼“§–¾
 alpha_screan(up_range_area,down_range_area,right_range_area,left_range_area)
 
---ÂŠiÂq
+--Šiq
 lattice(w,h,split,col,raw_size)
 
 
-----Â‘ÃÂŠpÂÃ¼
+----‘ÎŠpü
 diagonal(w,h,raw_size,col)
 
 
@@ -162,13 +163,13 @@ diagonal(w,h,raw_size,col)
 local perpendicular1 = obj.track2 /100
 local perpendicular2 = obj.track3 /100
 
---Â‘ÃÂŠpÂÃ¼Â‚ÃŒÂÂ‚ÂÃ¼
+--‘ÎŠpü‚Ì‚ü
 local size = raw_size /2
 obj.setoption("blend", 0)
-obj.load("figure","ÂlÂŠpÂŒ`",col,1)
+obj.load("figure","lŠpŒ`",col,1)
 
-local w_perpendicular1 = w*perpendicular1 -w/2
-local h_perpendicular1 = h*perpendicular1 -h/2
+w_perpendicular1 = w*perpendicular1 -w/2
+h_perpendicular1 = h*perpendicular1 -h/2
 
 local x1,y1 = rot( w /2 ,-h /2  ,math.rad(90))
 local x2,y2 = rot(-w /2 , h /2  ,math.rad(90))
@@ -194,8 +195,7 @@ obj.copybuffer("obj", "cache:crescent")
 obj.draw()
 
 obj.setoption("blend", 0)
-obj.load("figure","ÂlÂŠpÂŒ`",col,1)
-
+obj.load("figure","lŠpŒ`",col,1)
 local w_perpendicular2 = w*perpendicular2 -w/2
 local h_perpendicular2 = h*perpendicular2 -h/2
 
