@@ -1,14 +1,12 @@
+--track0:横,1,10,10,0.1
 
---track0:¡,1,10,10,0.1
+--track1:縦,1,10,10,0.1
 
---track1:c,1,10,10,0.1
+--track2:垂線1,0,100 ,0,0.1
 
---track2:ü1,0,100 ,0,0.1
+--track3:垂線2,0,100 ,0,0.1
 
---track3:ü2,0,100 ,0,0.1
-
---dialog:i(1-),split=3;ãÍÍ(0-100),up_range_area=90;ºÍÍ(0-100),down_range_area=90;EÍÍ(0-100),right_range_area=90;¶ÍÍ(0-100),left_range_area=90;ÍÍF(0-255),back_color=50;ÍÍ§Ÿx(0-1),range_alpha=0.5;F/col,col=0x0000FF;
---aaa dialog:i(1-),split=3;ÍÍ(0-100),back_range_area=90;ÍÍF(0-255),back_color=50;ÍÍ§Ÿx(0-1),range_alpha=0.5;F/col,col=0x0000FF;
+--dialog:段数(1-),split=3;上範囲(0-100),up_range_area=90;下範囲(0-100),down_range_area=90;右範囲(0-100),right_range_area=90;左範囲(0-100),left_range_area=90;範囲色(0-255),back_color=50;範囲透明度(0-1),range_alpha=0.5;色/col,col=0x0000FF;
 
 local w = obj.screen_w
 local h = obj.screen_h
