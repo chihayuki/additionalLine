@@ -1,31 +1,31 @@
 
---track0:‰¡,1,10,10,0.1
+--track0:Â‰Â¡,1,10,10,0.1
 
---track1:c,1,10,10,0.1
+--track1:Âc,1,10,10,0.1
 
---track2:‚ü1,0,100 ,0,0.1
+--track2:ÂÂ‚ÂÃ¼1,0,100 ,0,0.1
 
---track3:‚ü2,0,100 ,0,0.1
+--track3:ÂÂ‚ÂÃ¼2,0,100 ,0,0.1
 
---dialog:’i”(1-),split=3;ã”ÍˆÍ(0-100),up_range_area=90;‰º”ÍˆÍ(0-100),down_range_area=90;‰E”ÍˆÍ(0-100),right_range_area=90;¶”ÍˆÍ(0-100),left_range_area=90;”ÍˆÍF(0-255),back_color=50;”ÍˆÍ“§–¾“x(0-1),range_alpha=0.5;F/col,col=0x0000FF;
---aaa dialog:’i”(1-),split=3;”ÍˆÍ(0-100),back_range_area=90;”ÍˆÍF(0-255),back_color=50;”ÍˆÍ“§–¾“x(0-1),range_alpha=0.5;F/col,col=0x0000FF;
+--dialog:Â’iÂÂ”(1-),split=3;ÂÃ£Â”ÃÂˆÃ(0-100),up_range_area=90;Â‰ÂºÂ”ÃÂˆÃ(0-100),down_range_area=90;Â‰EÂ”ÃÂˆÃ(0-100),right_range_area=90;ÂÂ¶Â”ÃÂˆÃ(0-100),left_range_area=90;Â”ÃÂˆÃÂF(0-255),back_color=50;Â”ÃÂˆÃÂ“Â§Â–Å¸Â“x(0-1),range_alpha=0.5;ÂF/col,col=0x0000FF;
+--aaa dialog:Â’iÂÂ”(1-),split=3;Â”ÃÂˆÃ(0-100),back_range_area=90;Â”ÃÂˆÃÂF(0-255),back_color=50;Â”ÃÂˆÃÂ“Â§Â–Å¸Â“x(0-1),range_alpha=0.5;ÂF/col,col=0x0000FF;
 
-w = obj.screen_w
-h = obj.screen_h
+local w = obj.screen_w
+local h = obj.screen_h
 
 function line (x0,y0,x1,y1,color,deg)
 	obj.setoption("blend", 0,w,h)
-	obj.load("figure", "lŠpŒ`", color, 1)
+	obj.load("figure", "ÂlÂŠpÂŒ`", color, 1)
 	obj.drawpoly(x0,y0,0, x1,y0,0, x1,y1,0, x0,y1,0)
 	obj.draw()
 end
 
 function diagonal(w,h,raw_size,col)
-	--‘ÎŠpü
-	size = raw_size /2
+	--Â‘ÃÂŠpÂÃ¼
+	local size = raw_size /2
 	--obj.setoption("drawtarget", "tempbuffer", w, h)
 	obj.setoption("blend", 0)
-	obj.load("figure","lŠpŒ`",col,1)
+	obj.load("figure","ÂlÂŠpÂŒ`",col,1)
 	obj.drawpoly(
 				  w/2 -size,-h/2 -size,0,
 				 -w/2 -size, h/2 -size,0,
@@ -58,39 +58,40 @@ end
 
 
 function alpha_screan(up_area,down_area,right_area,left_area)
-  --”¼“§–¾‚Ì”ÍˆÍ 
+  --Â”Å’Â“Â§Â–Å¸Â‚ÃŒÂ”ÃÂˆÃ 
   --obj.setoption("drawtarget", "tempbuffer", w, h)
   obj.setoption("blend", 0)
-  rect_color = RGB(back_color,back_color,back_color)
-  obj.load("figure","lŠpŒ`",rect_color,1)
+  
+  local rect_color = RGB(back_color,back_color,back_color)
+  obj.load("figure","ÂlÂŠpÂŒ`",rect_color,1)
   obj.setoption("blend", 0)
   
-  up         = -h * up_area    / 100 / 2
-  down       =  h * down_area  / 100 / 2
-  up_right   = -w * right_area / 100 / 2
-  up_left    =  w * left_area  / 100 / 2
-  down_right = -w * right_area / 100 / 2
-  down_left  =  w * left_area  / 100 / 2
+  local up         = -h * up_area    / 100 / 2
+  local down       =  h * down_area  / 100 / 2
+  local up_right   = -w * right_area / 100 / 2
+  local up_left    =  w * left_area  / 100 / 2
+  local down_right = -w * right_area / 100 / 2
+  local down_left  =  w * left_area  / 100 / 2
 
-  --ã
+  --ÂÃ£
   trapezoid(-w      , -h,
             up_right,  up,
 			up_left ,  up,
 			w       , -h,
 			range_alpha)
-  --‰º
+  --Â‰Âº
   trapezoid(w         , h,
 			down_left , down,
             down_right, down,
 			-w        , h,
 			range_alpha)
-  --¶
+  --ÂÂ¶
   trapezoid(-w        , -h,
   			up_right  ,  up,
   			down_right,  down,
 			-w        ,  h,
 			range_alpha)
-  --‰E
+  --Â‰E
   trapezoid(w,-h,
 			up_left  , up,
 			down_left, down,
@@ -101,12 +102,12 @@ function alpha_screan(up_area,down_area,right_area,left_area)
   obj.draw()
 end
 
-function lattice(w,h,split,col)
-	--Šiq
+function lattice(w,h,split,col,raw_size)
+	--ÂŠiÂq
 	--obj.setoption("drawtarget", "tempbuffer", w, h)
-	w_radius = w /split
-	h_radius = h /split
-	
+	local w_radius = w /split
+	local h_radius = h /split
+	local size = 0
 	for i = 0,split do
 		if i == 0 or i== split then
 			size = raw_size *2
@@ -140,40 +141,41 @@ function rot(x,y,rag)
 end
 
 
-w_ratio = 1 - (10-obj.track0)/10
-h_ratio = 1 + (obj.track1-10)/10
-w = w * w_ratio
-h = h * h_ratio
-raw_size = 2
+local w_ratio = 1 - (10-obj.track0)/10
+local h_ratio = 1 + (obj.track1-10)/10
+local w = w * w_ratio
+local h = h * h_ratio
+local raw_size = 2
 
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
---”¼“§–¾
+--Â”Å’Â“Â§Â–Å¸
 alpha_screan(up_range_area,down_range_area,right_range_area,left_range_area)
 
---Šiq
-lattice(w,h,split,col)
+--ÂŠiÂq
+lattice(w,h,split,col,raw_size)
 
 
-----‘ÎŠpü
+----Â‘ÃÂŠpÂÃ¼
 diagonal(w,h,raw_size,col)
 
 
 
-perpendicular1 = obj.track2 /100
-perpendicular2 = obj.track3 /100
+local perpendicular1 = obj.track2 /100
+local perpendicular2 = obj.track3 /100
 
---‘ÎŠpü‚Ì‚ü size = raw_size /2
+--Â‘ÃÂŠpÂÃ¼Â‚ÃŒÂÂ‚ÂÃ¼
+local size = raw_size /2
 obj.setoption("blend", 0)
-obj.load("figure","lŠpŒ`",col,1)
+obj.load("figure","ÂlÂŠpÂŒ`",col,1)
 
-w_perpendicular1 = w*perpendicular1 -w/2
-h_perpendicular1 = h*perpendicular1 -h/2
+local w_perpendicular1 = w*perpendicular1 -w/2
+local h_perpendicular1 = h*perpendicular1 -h/2
 
-x1,y1 = rot( w /2 ,-h /2  ,math.rad(90))
-x2,y2 = rot(-w /2 , h /2  ,math.rad(90))
-x3,y3 = rot(-w /2 , h /2  ,math.rad(90))
-x4,y4 = rot( w /2 ,-h /2  ,math.rad(90))
+local x1,y1 = rot( w /2 ,-h /2  ,math.rad(90))
+local x2,y2 = rot(-w /2 , h /2  ,math.rad(90))
+local x3,y3 = rot(-w /2 , h /2  ,math.rad(90))
+local x4,y4 = rot( w /2 ,-h /2  ,math.rad(90))
 
 x1= x1 + w_perpendicular1+size
 x2= x2 + w_perpendicular1+size
@@ -194,9 +196,10 @@ obj.copybuffer("obj", "cache:crescent")
 obj.draw()
 
 obj.setoption("blend", 0)
-obj.load("figure","lŠpŒ`",col,1)
-w_perpendicular2 = w*perpendicular2 -w/2
-h_perpendicular2 = h*perpendicular2 -h/2
+obj.load("figure","ÂlÂŠpÂŒ`",col,1)
+
+local w_perpendicular2 = w*perpendicular2 -w/2
+local h_perpendicular2 = h*perpendicular2 -h/2
 
 x1,y1 = rot(-w /2 ,-h /2  ,math.rad(90))
 x2,y2 = rot(-w /2 ,-h /2  ,math.rad(90))
